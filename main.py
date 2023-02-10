@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 
 
+import pymysql
+pymysql.install_as_MySQLdb()
+
 # import models
 # from . import models
 from database import engine
