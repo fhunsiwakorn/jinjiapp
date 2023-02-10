@@ -9,10 +9,10 @@ pymysql.install_as_MySQLdb()
 # import models
 # from . import models
 from database import engine
-from routes.routes_general import router_general
+# from routes.routes_general import router_general
 from routes.routes_masterdata import router_masterdata
-from routes.routes_user import router_user
-from routes.router_user_part2 import router_user_part2
+# from routes.routes_user import router_user
+# from routes.router_user_part2 import router_user_part2
 # from starlette.requests import Request
 # models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
@@ -48,9 +48,9 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     else:
         raise HTTPException(
             status_code=400, detail="Incorrect username or password")
-app.include_router(router_user, prefix="/user", tags=["UserPart1"])
-app.include_router(router_user_part2, prefix="/userpart2", tags=["UserPart2"])
-app.include_router(router_general, prefix="/general", tags=["General"])
+# app.include_router(router_user, prefix="/user", tags=["UserPart1"])
+# app.include_router(router_user_part2, prefix="/userpart2", tags=["UserPart2"])
+# app.include_router(router_general, prefix="/general", tags=["General"])
 app.include_router(router_masterdata, prefix="/masterdata",
                    tags=["Masterdata"])
 
