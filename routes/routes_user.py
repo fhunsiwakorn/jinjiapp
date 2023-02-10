@@ -201,314 +201,314 @@ def get_experience(user_id: str,  db: Session = Depends(get_db), authenticated: 
     return _user
 
 
-# @router_user.put("/experience/{exp_id}")
-# def update_experience(exp_id: int, request: ExperienceRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserExperience).filter(
-#         UserExperience.exp_id == exp_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     _user.exp_comapany = request.exp_comapany
-#     _user.exp_year_start = request.exp_year_start
-#     _user.exp_year_end = request.exp_year_end
-#     _user.exp_last_position = request.exp_last_position
-#     _user.exp_last_salary = request.exp_last_salary
-#     _user.exp_responsibility = request.exp_responsibility
-#     _user.active = request.active
-#     _user.udp_date = todaytime()
-#     _user.user_id = request.user_id
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
+@router_user.put("/experience/{exp_id}")
+def update_experience(exp_id: int, request: ExperienceRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserExperience).filter(
+        UserExperience.exp_id == exp_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    _user.exp_comapany = request.exp_comapany
+    _user.exp_year_start = request.exp_year_start
+    _user.exp_year_end = request.exp_year_end
+    _user.exp_last_position = request.exp_last_position
+    _user.exp_last_salary = request.exp_last_salary
+    _user.exp_responsibility = request.exp_responsibility
+    _user.active = request.active
+    _user.udp_date = todaytime()
+    _user.user_id = request.user_id
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success update data")
 
 
-# @router_user.delete("/experience/{exp_id}")
-# def delete_experience(exp_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserExperience).filter(
-#         UserExperience.exp_id == exp_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     db.delete(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
+@router_user.delete("/experience/{exp_id}")
+def delete_experience(exp_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserExperience).filter(
+        UserExperience.exp_id == exp_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    db.delete(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
 
 
-# @router_user.post("/education/create")
-# def create_education(request: EducationRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     user_id = request.user_id
-#     _checktotal = db.query(UserEducation).filter(
-#         UserEducation.user_id == user_id).count()
-#     if _checktotal >= 3:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     _user = UserEducation(
-#         edu_degree=request.edu_degree,
-#         edu_faculty=request.edu_faculty,
-#         edu_major=request.edu_major,
-#         edu_graduation_year=request.edu_graduation_year,
-#         edu_gpa=request.edu_gpa,
-#         active=request.active,
-#         create_date=todaytime(),
-#         udp_date=todaytime(),
-#         institution_id=request.institution_id,
-#         user_id=user_id
-#     )
-#     db.add(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
+@router_user.post("/education/create")
+def create_education(request: EducationRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    user_id = request.user_id
+    _checktotal = db.query(UserEducation).filter(
+        UserEducation.user_id == user_id).count()
+    if _checktotal >= 3:
+        raise HTTPException(status_code=404, detail="Data not found")
+    _user = UserEducation(
+        edu_degree=request.edu_degree,
+        edu_faculty=request.edu_faculty,
+        edu_major=request.edu_major,
+        edu_graduation_year=request.edu_graduation_year,
+        edu_gpa=request.edu_gpa,
+        active=request.active,
+        create_date=todaytime(),
+        udp_date=todaytime(),
+        institution_id=request.institution_id,
+        user_id=user_id
+    )
+    db.add(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
-# @router_user.get("/education/{user_id}", response_model=list[EducationRequestOutSchema])
-# def get_education(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserEducation).order_by(desc(UserEducation.edu_graduation_year)).filter(
-#         UserEducation.user_id == user_id).all()
-#     return _user
+@router_user.get("/education/{user_id}", response_model=List[EducationRequestOutSchema])
+def get_education(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserEducation).order_by(desc(UserEducation.edu_graduation_year)).filter(
+        UserEducation.user_id == user_id).all()
+    return _user
 
 
-# @router_user.put("/education/{edu_id}")
-# def update_education(edu_id: int, request: EducationRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserEducation).filter(
-#         UserEducation.edu_id == edu_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     _user.edu_degree = request.edu_degree
-#     _user.edu_faculty = request.edu_faculty
-#     _user.edu_major = request.edu_major
-#     _user.edu_graduation_year = request.edu_graduation_year
-#     _user.edu_gpa = request.edu_gpa
-#     _user.active = request.active
-#     _user.udp_date = todaytime()
-#     _user.institution_id = request.institution_id
-#     _user.user_id = request.user_id
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
+@router_user.put("/education/{edu_id}")
+def update_education(edu_id: int, request: EducationRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserEducation).filter(
+        UserEducation.edu_id == edu_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    _user.edu_degree = request.edu_degree
+    _user.edu_faculty = request.edu_faculty
+    _user.edu_major = request.edu_major
+    _user.edu_graduation_year = request.edu_graduation_year
+    _user.edu_gpa = request.edu_gpa
+    _user.active = request.active
+    _user.udp_date = todaytime()
+    _user.institution_id = request.institution_id
+    _user.user_id = request.user_id
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success update data")
 
 
-# @router_user.delete("/education/{edu_id}")
-# def delete_education(edu_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserEducation).filter(
-#         UserEducation.edu_id == edu_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     db.delete(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
+@router_user.delete("/education/{edu_id}")
+def delete_education(edu_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserEducation).filter(
+        UserEducation.edu_id == edu_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    db.delete(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
 
 
-# @router_user.post("/strength/create")
-# def create_strength(request: StrengthRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = UserStrength(
-#         strength_name=request.strength_name,
-#         create_date=todaytime(),
-#         udp_date=todaytime(),
-#         user_id=request.user_id
-#     )
-#     db.add(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
+@router_user.post("/strength/create")
+def create_strength(request: StrengthRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = UserStrength(
+        strength_name=request.strength_name,
+        create_date=todaytime(),
+        udp_date=todaytime(),
+        user_id=request.user_id
+    )
+    db.add(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
-# @router_user.put("/strength/{strength_id}")
-# def update_strength(strength_id: int, request: StrengthRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserStrength).filter(
-#         UserStrength.strength_id == strength_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     _user.strength_name = request.strength_name
-#     _user.user_id = request.user_id
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
+@router_user.put("/strength/{strength_id}")
+def update_strength(strength_id: int, request: StrengthRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserStrength).filter(
+        UserStrength.strength_id == strength_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    _user.strength_name = request.strength_name
+    _user.user_id = request.user_id
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success update data")
 
 
-# @router_user.get("/strength/{user_id}", response_model=list[StrengthRequestOutSchema])
-# def get_strength(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserStrength).order_by(asc(UserStrength.strength_id)).filter(
-#         UserStrength.user_id == user_id).all()
-#     return _user
+@router_user.get("/strength/{user_id}", response_model=List[StrengthRequestOutSchema])
+def get_strength(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserStrength).order_by(asc(UserStrength.strength_id)).filter(
+        UserStrength.user_id == user_id).all()
+    return _user
 
 
-# @router_user.delete("/strength/{strength_id}")
-# def delete_strength(strength_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserStrength).filter(
-#         UserStrength.strength_id == strength_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     db.delete(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
+@router_user.delete("/strength/{strength_id}")
+def delete_strength(strength_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserStrength).filter(
+        UserStrength.strength_id == strength_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    db.delete(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
 
 
-# @router_user.post("/hobbies/create")
-# def create_hobbies(request: HobbiesRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = UserHobbies(
-#         hobby_name=request.hobby_name,
-#         create_date=todaytime(),
-#         udp_date=todaytime(),
-#         user_id=request.user_id
-#     )
-#     db.add(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
+@router_user.post("/hobbies/create")
+def create_hobbies(request: HobbiesRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = UserHobbies(
+        hobby_name=request.hobby_name,
+        create_date=todaytime(),
+        udp_date=todaytime(),
+        user_id=request.user_id
+    )
+    db.add(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
-# @router_user.put("/hobbies/{hobby_id}")
-# def update_hobbies(hobby_id: int, request: HobbiesRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserHobbies).filter(
-#         UserHobbies.hobby_id == hobby_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     _user.hobby_name = request.hobby_name
-#     _user.user_id = request.user_id
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
+@router_user.put("/hobbies/{hobby_id}")
+def update_hobbies(hobby_id: int, request: HobbiesRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserHobbies).filter(
+        UserHobbies.hobby_id == hobby_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    _user.hobby_name = request.hobby_name
+    _user.user_id = request.user_id
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success update data")
 
 
-# @router_user.get("/hobbies/{user_id}", response_model=list[HobbiesRequestOutSchema])
-# def get_hobbies(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserHobbies).order_by(asc(UserHobbies.hobby_id)).filter(
-#         UserHobbies.user_id == user_id).all()
-#     return _user
+@router_user.get("/hobbies/{user_id}", response_model=List[HobbiesRequestOutSchema])
+def get_hobbies(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserHobbies).order_by(asc(UserHobbies.hobby_id)).filter(
+        UserHobbies.user_id == user_id).all()
+    return _user
 
 
-# @router_user.delete("/hobbies/{hobby_id}")
-# def delete_hobbies(hobby_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserHobbies).filter(
-#         UserHobbies.hobby_id == hobby_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     db.delete(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
+@router_user.delete("/hobbies/{hobby_id}")
+def delete_hobbies(hobby_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserHobbies).filter(
+        UserHobbies.hobby_id == hobby_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    db.delete(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
 
 
-# @router_user.post("/rewards/create")
-# def create_reward(request: RewardsRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = UserRewards(
-#         reward_name=request.reward_name,
-#         reward_file_path=request.reward_file_path,
-#         create_date=todaytime(),
-#         udp_date=todaytime(),
-#         user_id=request.user_id
-#     )
-#     db.add(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
+@router_user.post("/rewards/create")
+def create_reward(request: RewardsRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = UserRewards(
+        reward_name=request.reward_name,
+        reward_file_path=request.reward_file_path,
+        create_date=todaytime(),
+        udp_date=todaytime(),
+        user_id=request.user_id
+    )
+    db.add(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
-# @router_user.put("/rewards/{reward_id}")
-# def update_reward(reward_id: int, request: RewardsRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserRewards).filter(
-#         UserRewards.reward_id == reward_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     _user.reward_name = request.reward_name
-#     _user.reward_file_path = request.reward_file_path
-#     _user.user_id = request.user_id
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
+@router_user.put("/rewards/{reward_id}")
+def update_reward(reward_id: int, request: RewardsRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserRewards).filter(
+        UserRewards.reward_id == reward_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    _user.reward_name = request.reward_name
+    _user.reward_file_path = request.reward_file_path
+    _user.user_id = request.user_id
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success update data")
 
 
-# @router_user.get("/rewards/{user_id}", response_model=list[RewardsRequestOutSchema])
-# def get_reward(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserRewards).order_by(asc(UserRewards.reward_id)).filter(
-#         UserRewards.user_id == user_id).all()
-#     return _user
+@router_user.get("/rewards/{user_id}", response_model=List[RewardsRequestOutSchema])
+def get_reward(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserRewards).order_by(asc(UserRewards.reward_id)).filter(
+        UserRewards.user_id == user_id).all()
+    return _user
 
 
-# @router_user.delete("/rewards/{reward_id}")
-# def delete_reward(reward_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserRewards).filter(
-#         UserRewards.reward_id == reward_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     db.delete(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
+@router_user.delete("/rewards/{reward_id}")
+def delete_reward(reward_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserRewards).filter(
+        UserRewards.reward_id == reward_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    db.delete(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
 
 
-# @router_user.post("/language/create")
-# def create_language(request: LanguagRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     user_id = request.user_id
-#     _checktotal = db.query(UserLanguage).filter(
-#         UserLanguage.user_id == user_id).count()
-#     if _checktotal >= 3:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     _user = UserLanguage(
-#         language_code=request.language_code,
-#         language_overall=request.language_overall,
-#         language_type=request.language_type,
-#         language_score=request.language_score,
-#         create_date=todaytime(),
-#         udp_date=todaytime(),
-#         user_id=user_id
-#     )
-#     db.add(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
+@router_user.post("/language/create")
+def create_language(request: LanguagRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    user_id = request.user_id
+    _checktotal = db.query(UserLanguage).filter(
+        UserLanguage.user_id == user_id).count()
+    if _checktotal >= 3:
+        raise HTTPException(status_code=404, detail="Data not found")
+    _user = UserLanguage(
+        language_code=request.language_code,
+        language_overall=request.language_overall,
+        language_type=request.language_type,
+        language_score=request.language_score,
+        create_date=todaytime(),
+        udp_date=todaytime(),
+        user_id=user_id
+    )
+    db.add(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
-# @router_user.put("/language/{language_id}")
-# def update_language(language_id: int, request: LanguagRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserLanguage).filter(
-#         UserLanguage.language_id == language_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     _user.language_code = request.language_code
-#     _user.language_overall = request.language_overall
-#     _user.language_type = request.language_type
-#     _user.language_score = request.language_score
-#     _user.user_id = request.user_id
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
+@router_user.put("/language/{language_id}")
+def update_language(language_id: int, request: LanguagRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserLanguage).filter(
+        UserLanguage.language_id == language_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    _user.language_code = request.language_code
+    _user.language_overall = request.language_overall
+    _user.language_type = request.language_type
+    _user.language_score = request.language_score
+    _user.user_id = request.user_id
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success update data")
 
 
-# @router_user.get("/language/{user_id}", response_model=list[LanguagRequestOutSchema])
-# def get_language(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserLanguage).order_by(asc(UserLanguage.language_id)).filter(
-#         UserLanguage.user_id == user_id).all()
-#     return _user
+@router_user.get("/language/{user_id}", response_model=List[LanguagRequestOutSchema])
+def get_language(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserLanguage).order_by(asc(UserLanguage.language_id)).filter(
+        UserLanguage.user_id == user_id).all()
+    return _user
 
 
-# @router_user.delete("/language/{language_id}")
-# def delete_language(language_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserLanguage).filter(
-#         UserLanguage.language_id == language_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     db.delete(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
+@router_user.delete("/language/{language_id}")
+def delete_language(language_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserLanguage).filter(
+        UserLanguage.language_id == language_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    db.delete(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
 
 
-# @router_user.post("/skill_profile/create")
-# def create_skill_profile(request: SkillProfileRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     user_id = request.user_id
-#     _checktotal = db.query(UserSkill).filter(
-#         UserSkill.user_id == user_id).count()
-#     if _checktotal >= 3:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     _user = UserSkill(
-#         skill_profile_detail=request.skill_profile_detail,
-#         create_date=todaytime(),
-#         udp_date=todaytime(),
-#         skill_id=request.skill_id,
-#         user_id=user_id
-#     )
-#     db.add(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
+@router_user.post("/skill_profile/create")
+def create_skill_profile(request: SkillProfileRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    user_id = request.user_id
+    _checktotal = db.query(UserSkill).filter(
+        UserSkill.user_id == user_id).count()
+    if _checktotal >= 3:
+        raise HTTPException(status_code=404, detail="Data not found")
+    _user = UserSkill(
+        skill_profile_detail=request.skill_profile_detail,
+        create_date=todaytime(),
+        udp_date=todaytime(),
+        skill_id=request.skill_id,
+        user_id=user_id
+    )
+    db.add(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
-# @router_user.get("/skill_profile/{user_id}", response_model=list[SkillProfileRequestOutSchema])
-# def get_skill_profile(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserSkill).options(joinedload(UserSkill.skill_profile_child)).order_by(asc(UserSkill.skill_profile_id)).filter(
-#         UserSkill.user_id == user_id).all()
-#     return _user
+@router_user.get("/skill_profile/{user_id}", response_model=List[SkillProfileRequestOutSchema])
+def get_skill_profile(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserSkill).options(joinedload(UserSkill.skill_profile_child)).order_by(asc(UserSkill.skill_profile_id)).filter(
+        UserSkill.user_id == user_id).all()
+    return _user
 
 
-# @router_user.delete("/skill_profile/{skill_profile_id}")
-# def delete_language(skill_profile_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserSkill).filter(
-#         UserSkill.skill_profile_id == skill_profile_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     db.delete(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
+@router_user.delete("/skill_profile/{skill_profile_id}")
+def delete_language(skill_profile_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserSkill).filter(
+        UserSkill.skill_profile_id == skill_profile_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    db.delete(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success delete data")

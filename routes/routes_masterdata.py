@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import and_, asc, desc, or_
 from sqlalchemy.orm import Session
+from typing import List
 from authen import auth_request
 from database import get_db
 from function import ceil, ternaryZero, todaytime
@@ -218,7 +219,7 @@ def update_skill(skill_id: int, request: SkillRequestInSchema,  db: Session = De
     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
 
 
-@router_masterdata.get("/skill/get/all", response_model=list[SkillFullRequestOutSchema])
+@router_masterdata.get("/skill/get/all", response_model=List[SkillFullRequestOutSchema])
 def get_skill(db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
     obj = []
     for rs in main_skill:
@@ -231,7 +232,7 @@ def get_skill(db: Session = Depends(get_db), authenticated: bool = Depends(auth_
     return obj
 
 
-@router_masterdata.get("/skill", response_model=list[SkillRequestOutSchema])
+@router_masterdata.get("/skill", response_model=List[SkillRequestOutSchema])
 def get_skill_option(typeskill: int, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
     if typeskill > 0:
         query = Skill.skill_group_type == typeskill
@@ -299,7 +300,7 @@ def delete_work_parent(wp_id: int, db: Session = Depends(get_db), authenticated:
     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
 
 
-@router_masterdata.get("/work_parent", response_model=list[WorkFullOptionRequestOutSchema])
+@router_masterdata.get("/work_parent", response_model=List[WorkFullOptionRequestOutSchema])
 def get_work_parent(db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
     _work_parent = db.query(WorkParent).order_by(desc(WorkParent.create_date)).filter(
         WorkParent.cancelled == 1).all()
@@ -345,14 +346,14 @@ def delete_work_child(wc_id: int, db: Session = Depends(get_db), authenticated: 
     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
 
 
-@router_masterdata.get("/work_child", response_model=list[WorkChildRequestOutSchema])
+@router_masterdata.get("/work_child", response_model=List[WorkChildRequestOutSchema])
 def get_work_child(db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
     _work_child = db.query(WorkChild).order_by(desc(WorkChild.create_date)).filter(
         WorkChild.cancelled == 1).all()
     return _work_child
 
 
-@router_masterdata.get("/work_child", response_model=list[WorkChildRequestOutSchema])
+@router_masterdata.get("/work_child", response_model=List[WorkChildRequestOutSchema])
 def get_work_child_option_group(db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
     _work_child = db.query(WorkChild).order_by(desc(WorkChild.create_date)).filter(
         WorkChild.cancelled == 1).all()
@@ -396,7 +397,7 @@ def delete_business_type(bt_id: int,  db: Session = Depends(get_db), authenticat
     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
 
 
-@router_masterdata.get("/business_type", response_model=list[BusinessTypeRequestOutSchema])
+@router_masterdata.get("/business_type", response_model=List[BusinessTypeRequestOutSchema])
 def get_business_type(db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
     _business_type = db.query(BusinessType).order_by(desc(BusinessType.create_date)).filter(
         BusinessType.cancelled == 1).all()
