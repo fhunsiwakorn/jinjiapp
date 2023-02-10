@@ -193,11 +193,11 @@ def create_experience(request: ExperienceRequestInSchema, db: Session = Depends(
     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
-# @router_user.get("/experience/{user_id}", response_model=list[ExperienceRequestOutSchema])
-# def get_experience(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserExperience).order_by(desc(UserExperience.exp_year_end)).filter(
-#         UserExperience.user_id == user_id).all()
-#     return _user
+@router_user.get("/experience/{user_id}", response_model=list[ExperienceRequestOutSchema])
+def get_experience(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserExperience).order_by(desc(UserExperience.exp_year_end)).filter(
+        UserExperience.user_id == user_id).all()
+    return _user
 
 
 # @router_user.put("/experience/{exp_id}")
