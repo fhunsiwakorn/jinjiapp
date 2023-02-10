@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from passlib.hash import sha256_crypt
 from sqlalchemy import desc, asc, or_
 from sqlalchemy.orm import Session, joinedload
+from typing import List
 
 from authen import auth_request
 from database import get_db
@@ -193,7 +194,7 @@ def create_experience(request: ExperienceRequestInSchema, db: Session = Depends(
     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
-@router_user.get("/experience/{user_id}", response_model=list[ExperienceRequestOutSchema])
+@router_user.get("/experience/{user_id}", response_model=List[ExperienceRequestOutSchema])
 def get_experience(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
     _user = db.query(UserExperience).order_by(desc(UserExperience.exp_year_end)).filter(
         UserExperience.user_id == user_id).all()
