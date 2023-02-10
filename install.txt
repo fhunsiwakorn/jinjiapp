@@ -1,0 +1,30 @@
+--create env
+python -m venv jinjienvt 
+--Active env
+..\jinjienvt\Scripts\activate
+
+--library
+python.exe -m pip install --upgrade pip
+pip install fastapi  SQLAlchemy
+pip install mysqlclient
+pip install python-dateutil
+pip install Pillow
+pip install "uvicorn[standard]"
+pip install gunicorn
+
+--export library 
+pip freeze > requirements.txt
+--install txt
+pip install requirements.txt
+pip install --upgrade -r requirements.txt
+--upgrade pip
+python -m pip install --upgrade pip
+
+
+--Runinng App
+uvicorn main:app --reload
+uvicorn main:app --reload --port 5213
+//
+https://www.youtube.com/watch?v=Lj7ivxUvSog
+https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/140
+https://github.com/lemoncode21/fastapi-postgresql-crud
