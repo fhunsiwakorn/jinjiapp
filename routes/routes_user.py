@@ -168,29 +168,29 @@ def login(request: UserLoginSchema, db: Session = Depends(get_db), authenticated
 # Detail Method
 
 
-# @router_user.post("/experience/create")
-# def create_experience(request: ExperienceRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     user_id = request.user_id
-#     _checktotal = db.query(UserExperience).filter(
-#         UserExperience.user_id == user_id).count()
-#     if _checktotal >= 3:
-#         raise HTTPException(status_code=404, detail="Data not found")
+@router_user.post("/experience/create")
+def create_experience(request: ExperienceRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    user_id = request.user_id
+    _checktotal = db.query(UserExperience).filter(
+        UserExperience.user_id == user_id).count()
+    if _checktotal >= 3:
+        raise HTTPException(status_code=404, detail="Data not found")
 
-#     _user = UserExperience(
-#         exp_comapany=request.exp_comapany,
-#         exp_year_start=request.exp_year_start,
-#         exp_year_end=request.exp_year_end,
-#         exp_last_position=request.exp_last_position,
-#         exp_last_salary=request.exp_last_salary,
-#         exp_responsibility=request.exp_responsibility,
-#         active=request.active,
-#         create_date=todaytime(),
-#         udp_date=todaytime(),
-#         user_id=user_id
-#     )
-#     db.add(_user)
-#     db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
+    _user = UserExperience(
+        exp_comapany=request.exp_comapany,
+        exp_year_start=request.exp_year_start,
+        exp_year_end=request.exp_year_end,
+        exp_last_position=request.exp_last_position,
+        exp_last_salary=request.exp_last_salary,
+        exp_responsibility=request.exp_responsibility,
+        active=request.active,
+        create_date=todaytime(),
+        udp_date=todaytime(),
+        user_id=user_id
+    )
+    db.add(_user)
+    db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
 # @router_user.get("/experience/{user_id}", response_model=list[ExperienceRequestOutSchema])
