@@ -43,60 +43,60 @@ def create_user(request: UserRequestInSchema, db: Session = Depends(get_db), aut
     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
-# @router_user.put("/{user_id}")
-# def update_user(user_id: str, request: UserRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(User).filter(
-#         User.user_id == user_id).one_or_none()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
-#     password = request.password
+@router_user.put("/{user_id}")
+def update_user(user_id: str, request: UserRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(User).filter(
+        User.user_id == user_id).one_or_none()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    password = request.password
 
-#     if(password == "" or password == None):
-#         password_hash = _user.password
-#     else:
-#         password_hash = sha256_crypt.encrypt(str(password))
+    if(password == "" or password == None):
+        password_hash = _user.password
+    else:
+        password_hash = sha256_crypt.encrypt(str(password))
 
-#     _user.username = request.username
-#     _user.password = password_hash
-#     _user.firstname = request.firstname
-#     _user.lastname = request.lastname
-#     _user.email = request.email
-#     _user.user_image_prifile = request.user_image_prifile
-#     _user.user_image_cover = request.user_image_cover
-#     _user.user_image_cover_position = request.user_image_cover_position
-#     _user.user_type = request.user_type
-#     _user.active = request.active
-#     _user.update_date = todaytime()
+    _user.username = request.username
+    _user.password = password_hash
+    _user.firstname = request.firstname
+    _user.lastname = request.lastname
+    _user.email = request.email
+    _user.user_image_prifile = request.user_image_prifile
+    _user.user_image_cover = request.user_image_cover
+    _user.user_image_cover_position = request.user_image_cover_position
+    _user.user_type = request.user_type
+    _user.active = request.active
+    _user.update_date = todaytime()
 
-#     db.commit()
-#     db.refresh(_user)
-#     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
+    db.commit()
+    db.refresh(_user)
+    return ResponseProcess(status="Ok", status_code="200", message="Success update data")
 
 
-# @router_user.post("/all")
-# def get_user(request: FilterRequestSchema, typeuser: str = "all", db: Session = Depends(get_db),  authenticated: bool = Depends(auth_request)):
+@router_user.post("/all")
+def get_user(request: FilterRequestSchema, typeuser: str = "all", db: Session = Depends(get_db),  authenticated: bool = Depends(auth_request)):
 
-#     skip = ternaryZero(((request.page - 1) * request.per_page))
-#     limit = request.per_page
-#     search_value = request.search_value
-#     # Filter user type : all , 1,2,3
+    skip = ternaryZero(((request.page - 1) * request.per_page))
+    limit = request.per_page
+    search_value = request.search_value
+    # Filter user type : all , 1,2,3
 
-#     if typeuser == "all":
-#         queryfilter = User.user_type > 0
-#     else:
-#         queryfilter = User.user_type == int(typeuser)
-#     if search_value:
-#         result = db.query(User).order_by(desc(User.create_date)).filter(or_(User.firstname.contains(
-#             search_value), User.lastname.contains(search_value), User.username.contains(search_value)), User.cancelled == 1, queryfilter).offset(skip).limit(limit).all()
-#     else:
-#         result = db.query(User).order_by(desc(User.create_date)).filter(User.cancelled == 1,
-#                                                                         queryfilter).offset(skip).limit(limit).all()
+    if typeuser == "all":
+        queryfilter = User.user_type > 0
+    else:
+        queryfilter = User.user_type == int(typeuser)
+    if search_value:
+        result = db.query(User).order_by(desc(User.create_date)).filter(or_(User.firstname.contains(
+            search_value), User.lastname.contains(search_value), User.username.contains(search_value)), User.cancelled == 1, queryfilter).offset(skip).limit(limit).all()
+    else:
+        result = db.query(User).order_by(desc(User.create_date)).filter(User.cancelled == 1,
+                                                                        queryfilter).offset(skip).limit(limit).all()
 
-#     total_data = db.query(User).filter(
-#         User.cancelled == 1, queryfilter).count()
-#     total_filter_data = len(result)
-#     total_page = ceil(total_data / request.per_page)
-#     return UserRequestOutOptionSchema(status="success", status_code="200", message="Success fetch all data", page=request.page, per_page=limit, total_page=total_page, total_data=total_data, total_filter_data=total_filter_data, data=result)
+    total_data = db.query(User).filter(
+        User.cancelled == 1, queryfilter).count()
+    total_filter_data = len(result)
+    total_page = ceil(total_data / request.per_page)
+    return UserRequestOutOptionSchema(status="success", status_code="200", message="Success fetch all data", page=request.page, per_page=limit, total_page=total_page, total_data=total_data, total_filter_data=total_filter_data, data=result)
 
 
 # @router_user.get("/{user_id}", response_model=UserRequestOutSchema)
