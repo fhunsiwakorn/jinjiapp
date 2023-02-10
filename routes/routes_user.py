@@ -99,43 +99,43 @@ def get_user(request: FilterRequestSchema, typeuser: str = "all", db: Session = 
     return UserRequestOutOptionSchema(status="success", status_code="200", message="Success fetch all data", page=request.page, per_page=limit, total_page=total_page, total_data=total_data, total_filter_data=total_filter_data, data=result)
 
 
-# @router_user.get("/{user_id}", response_model=UserRequestOutSchema)
-# def get_by_user_id(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(User).filter(
-#         User.user_id == user_id, User.cancelled == 1, User.active == 1).first()
-#     if not _user:
-#         raise HTTPException(status_code=404, detail="Data not found")
+@router_user.get("/{user_id}", response_model=UserRequestOutSchema)
+def get_by_user_id(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(User).filter(
+        User.user_id == user_id, User.cancelled == 1, User.active == 1).first()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
 
-#     return _user
+    return _user
 
 
-# @router_user.put("/detail/{user_id}")
-# def update_user_detail(user_id: str, request: UserDetailRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-#     _user = db.query(UserDetail).filter(
-#         UserDetail.user_id == user_id).one_or_none()
-#     if not _user:
-#         _useradd = UserDetail(
-#             ud_bio=request.ud_bio,
-#             ud_birhday=request.ud_birhday,
-#             ud_phone=request.ud_phone,
-#             ud_gender=request.ud_gender,
-#             ud_address=request.ud_address,
-#             tambon_id=request.tambon_id,
-#             country_id=request.country_id,
-#             user_id=user_id
-#         )
-#         db.add(_useradd)
-#         db.commit()
-#     else:
-#         _user.ud_bio = request.ud_bio
-#         _user.ud_birhday = request.ud_birhday
-#         _user.ud_phone = request.ud_phone
-#         _user.ud_gender = request.ud_gender
-#         _user.ud_address = request.ud_address
-#         _user.tambon_id = request.tambon_id
-#         _user.country_id = request.country_id
-#         db.commit()
-#     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
+@router_user.put("/detail/{user_id}")
+def update_user_detail(user_id: str, request: UserDetailRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserDetail).filter(
+        UserDetail.user_id == user_id).one_or_none()
+    if not _user:
+        _useradd = UserDetail(
+            ud_bio=request.ud_bio,
+            ud_birhday=request.ud_birhday,
+            ud_phone=request.ud_phone,
+            ud_gender=request.ud_gender,
+            ud_address=request.ud_address,
+            tambon_id=request.tambon_id,
+            country_id=request.country_id,
+            user_id=user_id
+        )
+        db.add(_useradd)
+        db.commit()
+    else:
+        _user.ud_bio = request.ud_bio
+        _user.ud_birhday = request.ud_birhday
+        _user.ud_phone = request.ud_phone
+        _user.ud_gender = request.ud_gender
+        _user.ud_address = request.ud_address
+        _user.tambon_id = request.tambon_id
+        _user.country_id = request.country_id
+        db.commit()
+    return ResponseProcess(status="Ok", status_code="200", message="Success update data")
 
 
 # @router_user.delete("/{user_id}")
