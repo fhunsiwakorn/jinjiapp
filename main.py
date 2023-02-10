@@ -10,10 +10,10 @@ pymysql.install_as_MySQLdb()
 # from . import models
 from database import engine
 # from routes.routes_general import router_general
-from routes.routes_masterdata import router_masterdata
+# from routes.routes_masterdata import router_masterdata
 # from routes.routes_user import router_user
 # from routes.router_user_part2 import router_user_part2
-# from starlette.requests import Request
+from starlette.requests import Request
 # models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
@@ -27,10 +27,10 @@ app.add_middleware(
 )
 
 
-# @app.post("/test")
-# async def my_route(request: Request) -> None:
-#     print(request.url.path)
-#     return request.base_url._url
+@app.post("/test")
+async def my_route(request: Request) -> None:
+    print(request.url.path)
+    return request.base_url._url
 
 # สำหรับเปิด Test Swagger UI
 
@@ -51,7 +51,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 # app.include_router(router_user, prefix="/user", tags=["UserPart1"])
 # app.include_router(router_user_part2, prefix="/userpart2", tags=["UserPart2"])
 # app.include_router(router_general, prefix="/general", tags=["General"])
-app.include_router(router_masterdata, prefix="/masterdata",
-                   tags=["Masterdata"])
+# app.include_router(router_masterdata, prefix="/masterdata",
+#                    tags=["Masterdata"])
 
 
