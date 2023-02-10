@@ -168,66 +168,66 @@ def login(request: UserLoginSchema, db: Session = Depends(get_db), authenticated
 # Detail Method
 
 
-@router_user.post("/experience/create")
-def create_experience(request: ExperienceRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-    user_id = request.user_id
-    _checktotal = db.query(UserExperience).filter(
-        UserExperience.user_id == user_id).count()
-    if _checktotal >= 3:
-        raise HTTPException(status_code=404, detail="Data not found")
+# @router_user.post("/experience/create")
+# def create_experience(request: ExperienceRequestInSchema, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+#     user_id = request.user_id
+#     _checktotal = db.query(UserExperience).filter(
+#         UserExperience.user_id == user_id).count()
+#     if _checktotal >= 3:
+#         raise HTTPException(status_code=404, detail="Data not found")
 
-    _user = UserExperience(
-        exp_comapany=request.exp_comapany,
-        exp_year_start=request.exp_year_start,
-        exp_year_end=request.exp_year_end,
-        exp_last_position=request.exp_last_position,
-        exp_last_salary=request.exp_last_salary,
-        exp_responsibility=request.exp_responsibility,
-        active=request.active,
-        create_date=todaytime(),
-        udp_date=todaytime(),
-        user_id=user_id
-    )
-    db.add(_user)
-    db.commit()
-    return ResponseProcess(status="Ok", status_code="200", message="Success created data")
-
-
-@router_user.get("/experience/{user_id}", response_model=list[ExperienceRequestOutSchema])
-def get_experience(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-    _user = db.query(UserExperience).order_by(desc(UserExperience.exp_year_end)).filter(
-        UserExperience.user_id == user_id).all()
-    return _user
+#     _user = UserExperience(
+#         exp_comapany=request.exp_comapany,
+#         exp_year_start=request.exp_year_start,
+#         exp_year_end=request.exp_year_end,
+#         exp_last_position=request.exp_last_position,
+#         exp_last_salary=request.exp_last_salary,
+#         exp_responsibility=request.exp_responsibility,
+#         active=request.active,
+#         create_date=todaytime(),
+#         udp_date=todaytime(),
+#         user_id=user_id
+#     )
+#     db.add(_user)
+#     db.commit()
+#     return ResponseProcess(status="Ok", status_code="200", message="Success created data")
 
 
-@router_user.put("/experience/{exp_id}")
-def update_experience(exp_id: int, request: ExperienceRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-    _user = db.query(UserExperience).filter(
-        UserExperience.exp_id == exp_id).one_or_none()
-    if not _user:
-        raise HTTPException(status_code=404, detail="Data not found")
-    _user.exp_comapany = request.exp_comapany
-    _user.exp_year_start = request.exp_year_start
-    _user.exp_year_end = request.exp_year_end
-    _user.exp_last_position = request.exp_last_position
-    _user.exp_last_salary = request.exp_last_salary
-    _user.exp_responsibility = request.exp_responsibility
-    _user.active = request.active
-    _user.udp_date = todaytime()
-    _user.user_id = request.user_id
-    db.commit()
-    return ResponseProcess(status="Ok", status_code="200", message="Success update data")
+# @router_user.get("/experience/{user_id}", response_model=list[ExperienceRequestOutSchema])
+# def get_experience(user_id: str,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+#     _user = db.query(UserExperience).order_by(desc(UserExperience.exp_year_end)).filter(
+#         UserExperience.user_id == user_id).all()
+#     return _user
 
 
-@router_user.delete("/experience/{exp_id}")
-def delete_experience(exp_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-    _user = db.query(UserExperience).filter(
-        UserExperience.exp_id == exp_id).one_or_none()
-    if not _user:
-        raise HTTPException(status_code=404, detail="Data not found")
-    db.delete(_user)
-    db.commit()
-    return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
+# @router_user.put("/experience/{exp_id}")
+# def update_experience(exp_id: int, request: ExperienceRequestInSchema,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+#     _user = db.query(UserExperience).filter(
+#         UserExperience.exp_id == exp_id).one_or_none()
+#     if not _user:
+#         raise HTTPException(status_code=404, detail="Data not found")
+#     _user.exp_comapany = request.exp_comapany
+#     _user.exp_year_start = request.exp_year_start
+#     _user.exp_year_end = request.exp_year_end
+#     _user.exp_last_position = request.exp_last_position
+#     _user.exp_last_salary = request.exp_last_salary
+#     _user.exp_responsibility = request.exp_responsibility
+#     _user.active = request.active
+#     _user.udp_date = todaytime()
+#     _user.user_id = request.user_id
+#     db.commit()
+#     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
+
+
+# @router_user.delete("/experience/{exp_id}")
+# def delete_experience(exp_id: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+#     _user = db.query(UserExperience).filter(
+#         UserExperience.exp_id == exp_id).one_or_none()
+#     if not _user:
+#         raise HTTPException(status_code=404, detail="Data not found")
+#     db.delete(_user)
+#     db.commit()
+#     return ResponseProcess(status="Ok", status_code="200", message="Success delete data")
 
 
 # @router_user.post("/education/create")
