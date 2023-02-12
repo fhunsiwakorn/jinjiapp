@@ -47,19 +47,19 @@ app.add_middleware(
 # สำหรับเปิด Test Swagger UI
 
 
-# @app.post("/token")
-# async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-#     setuser = "siwakorn"
-#     # setpassword = "5CJwIvpNYwASgKUU"
-#     setpassword = "12345"
-#     username = form_data.username
-#     password = form_data.password
-#     # print(username)
-#     if username == setuser and password == setpassword:
-#         return {"access_token": "success", "token_type": "bearer"}
-#     else:
-#         raise HTTPException(
-#             status_code=400, detail="Incorrect username or password")
+@app.post("/token")
+async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    setuser = "siwakorn"
+    # setpassword = "5CJwIvpNYwASgKUU"
+    setpassword = "12345"
+    username = form_data.username
+    password = form_data.password
+    # print(username)
+    if username == setuser and password == setpassword:
+        return {"access_token": "success", "token_type": "bearer"}
+    else:
+        raise HTTPException(
+            status_code=400, detail="Incorrect username or password")
 app.include_router(router_user, prefix="/user", tags=["UserPart1"])
 app.include_router(router_user_part2, prefix="/userpart2", tags=["UserPart2"])
 app.include_router(router_masterdata, prefix="/masterdata",
