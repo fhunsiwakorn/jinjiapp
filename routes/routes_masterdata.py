@@ -219,18 +219,26 @@ def update_skill(skill_id: int, request: SkillRequestInSchema,  db: Session = De
     return ResponseProcess(status="Ok", status_code="200", message="Success update data")
 
 
-@router_masterdata.get("/skill/get/all", response_model=List[SkillFullRequestOutSchema])
-def get_skill(db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
-    obj = []
-    for rs in main_skill:
-        main_skill_id = rs['main_skill_id']
-        _skill = db.query(Skill).order_by(asc(Skill.skill_name)).filter(
-            Skill.skill_group_type == main_skill_id, Skill.cancelled == 1).all()
-        response = {'main_skill_id': main_skill_id,
-                    'main_skill_name': rs['main_skill_name'], 'subskills': _skill}
-        obj.append(response)
-    return obj
-
+# @router_masterdata.get("/skill/get/all", response_model=List[SkillFullRequestOutSchema])
+# def get_skill(db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+#     obj = []
+#     for rs in main_skill:
+#         main_skill_id = rs['main_skill_id']
+#         _skill = db.query(Skill).order_by(asc(Skill.skill_name)).filter(
+#             Skill.skill_group_type == main_skill_id, Skill.cancelled == 1).all()
+#         response = {'main_skill_id': main_skill_id,
+#                     'main_skill_name': rs['main_skill_name'], 'subskills': _skill}
+#         obj.append(response)
+#     return obj
+@router_masterdata.get("/skill", response_model=List[SkillRequestOutSchema])
+def get_skill_option(typeskill: int, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    if typeskill > 0:
+        query = Skill.skill_group_type == typeskill
+    else:
+        query = Skill.skill_group_type > 0
+    _skill = db.query(Skill).order_by(desc(Skill.create_date), asc(Skill.skill_group_type)).filter(
+        Skill.cancelled == 1, query).all()
+    return _skill
 
 @router_masterdata.get("/skill", response_model=List[SkillRequestOutSchema])
 def get_skill_option(typeskill: int, db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
