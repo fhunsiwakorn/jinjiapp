@@ -354,3 +354,14 @@ def get_portfolio(user_id: str, portfolio_type: int,  db: Session = Depends(get_
     if not _user:
         raise HTTPException(status_code=404, detail="Data not found")
     return _user
+
+@router_user_part2.delete("/portfolio/{user_id}", response_model=PortfolioRequestOutSchema)
+def delete_portfolio(user_id: str, portfolio_type: int,  db: Session = Depends(get_db), authenticated: bool = Depends(auth_request)):
+    _user = db.query(UserPortfolio).filter(
+        UserPortfolio.user_id == user_id, UserPortfolio.portfolio_type == portfolio_type).first()
+    if not _user:
+        raise HTTPException(status_code=404, detail="Data not found")
+    db.delete(_user)
+    db.commit()
+    return _user
+
